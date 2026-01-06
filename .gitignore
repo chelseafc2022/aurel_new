@@ -4,4 +4,5 @@ firebs/privatekey.json
 # Node
 node_modules/
 .env
-.DS_Storeserver/uploads/
+.DS_Store
+server/uploads/
