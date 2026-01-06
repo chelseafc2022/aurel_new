@@ -318,7 +318,7 @@ export default {
 
       var get_profile = JSON.parse(localStorage.profile);
       var profileku = get_profile.profile;
-      var dataMenu =await this.FETCHING.postMasterMenuGetSideBar(profileku.monev_pembangunan)
+      var dataMenu =await this.FETCHING.postMasterMenuGetSideBar(profileku.aurel_new)
 
 
 

@@ -130,7 +130,7 @@ router.post('/login', (req, res, next) =>{
             simpeg.instansi.instansi as instansi_nama,
 
 
-            monev_pembangunan.menu_klp.akses_unit as akses_unit
+            aurel_new.menu_klp.akses_unit as akses_unit
 
 
           
@@ -146,8 +146,8 @@ router.post('/login', (req, res, next) =>{
         JOIN simpeg.biodata 
             ON egov.users.nama_nip = simpeg.biodata.nip
 
-        LEFT JOIN monev_pembangunan.menu_klp 
-            ON monev_pembangunan.menu_klp.id = egov.users.monev_pembangunan
+        LEFT JOIN aurel_new.menu_klp 
+            ON aurel_new.menu_klp.id = egov.users.aurel_new
 
         WHERE users.username = '`+req.body.username+`';
         `;

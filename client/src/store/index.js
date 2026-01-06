@@ -92,6 +92,10 @@ export default new Vuex.Store({
       URL_kkr: URL + 'api/v1/kkr/',
       URL_saldo: URL + 'api/v1/saldo/',
 
+ // ======================== NEW AUREL ========================
+      DATA_DPA: URL + 'api/v1/dpa/',
+
+
       
     },
 
@@ -120,13 +124,7 @@ export default new Vuex.Store({
       { id: 12, uraian: 'Desember' },
 
     ],
-    list_master_permintaan : [],
-    list_urusan : [],
-    list_urusan_bidang : [],
-    list_master_program : [],
-    list_master_kegiatan : [],
-    list_master_kegiatan_sub : [],
-    list_master_sumber_dana : [],
+   
     list_contoh_autocomplete : [],
     list_unit_kerja: [],
     list_instansi: [],

@@ -63,18 +63,7 @@ Vue.use(mDatePicker)
 import pdfViewKu from './components/pdfView.vue'
 Vue.component('pdfViewKu', pdfViewKu);
 
-import rincianKegiatanTemp from './components/rincianKegiatanTemp.vue'
-Vue.component('rincianKegiatanTemp', rincianKegiatanTemp);
 
-
-import kk_adm from './components/kertas_kerja/kk_adm.vue'
-Vue.component('Kk_adm', kk_adm);
-import kk_hibah from './components/kertas_kerja/kk_hibah.vue'
-Vue.component('Kk_hibah', kk_hibah);
-import kk_kontrak from './components/kertas_kerja/kk_kontrak.vue'
-Vue.component('Kk_kontrak', kk_kontrak);
-import kk_sppd from './components/kertas_kerja/kk_sppd.vue'
-Vue.component('Kk_sppd', kk_sppd);
 
 const options = {
   name: '_blank',

@@ -200,6 +200,10 @@ app.use('/uploads', express.static(path.join(__dirname, './uploads')))
       // app.use('/api/v1/masterPPH', middleware.isLoggedIn, masterPPH);
 
 
+      const dpa = require('./apiMysql/main/aurel/dpa');
+      app.use('/api/v1/dpa', middleware.isLoggedIn, dpa);
+
+
 
 
     // =================== AUREL =====================
