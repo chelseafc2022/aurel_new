@@ -1,0 +1,6 @@
+# Firebase / Google Cloud secrets
+firebs/privatekey.json
+
+# Node
+node_modules/
+.env
