@@ -84,6 +84,12 @@ function isLoggedIn(to, from, next) {
   
 
   {
+    path: '/rekeningKoran',
+    name: 'REKENING KORAN',
+    component: () => import('../views/rekeningKoran.vue'),
+    beforeEnter: isLoggedIn,
+  },
+  {
     path: '/dpa',
     name: 'DPA',
     component: () => import('../views/dpa.vue'),
@@ -93,6 +99,18 @@ function isLoggedIn(to, from, next) {
     path: '/lra',
     name: 'LRA',
     component: () => import('../views/lra.vue'),
+    beforeEnter: isLoggedIn,
+  },
+  {
+    path: '/lpj',
+    name: 'LPJ',
+    component: () => import('../views/lpj.vue'),
+    beforeEnter: isLoggedIn,
+  },
+  {
+    path: '/bku_new',
+    name: 'BKU',
+    component: () => import('../views/bku_new.vue'),
     beforeEnter: isLoggedIn,
   },
   {

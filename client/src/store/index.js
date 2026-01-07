@@ -94,6 +94,10 @@ export default new Vuex.Store({
 
  // ======================== NEW AUREL ========================
       DATA_DPA: URL + 'api/v1/dpa/',
+      DATA_LRA: URL + 'api/v1/lra/',
+      DATA_LPJ: URL + 'api/v1/lpj/',
+      DATA_BKU: URL + 'api/v1/bku_new/',
+      DATA_REK: URL + 'api/v1/rek_koran/',
 
 
       
