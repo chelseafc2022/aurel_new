@@ -339,6 +339,7 @@ export default {
                 nama_file: '',
                 keterangan: '',
                 file: null,
+                file_old: '',
                 file_type: ''
             },
             filterku: {
