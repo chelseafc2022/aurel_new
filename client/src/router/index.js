@@ -114,6 +114,12 @@ function isLoggedIn(to, from, next) {
     beforeEnter: isLoggedIn,
   },
   {
+    path: '/rekonPajak',
+    name: 'rekonPajak',
+    component: () => import('../views/rekonPajak.vue'),
+    beforeEnter: isLoggedIn,
+  },
+  {
     path: '/about',
     name: 'About',
     component: () => import('../views/About.vue'),
