@@ -33,7 +33,7 @@
 
 
                 <div class="row">
-                    <div class="col-12 col-md-4 rowLeft">
+                    <div class="col-12 col-md-3 rowLeft">
                         <span class="h_lable ">Unit Kerja</span>
                         <select v-model="filterku.instansi" @change="onChangexUnitKerja()" class="bg-white">
                             <option value="">-- SEMUA UNIT KERJA --</option>
@@ -41,7 +41,7 @@
                                 data.instansi }}</option>
                         </select>
                     </div>
-                    <div class="col-12 col-md-4 ">
+                    <div class="col-12 col-md-3 ">
                         <span class="h_lable ">Sub Unit Kerja</span>
                         <select v-model="filterku.unit_kerja" @change="cari_data()" class="bg-white">
                             <option value="">-- SEMUA SUB-UNIT KERJA --</option>
@@ -49,12 +49,22 @@
                                 data.unit_kerja }}</option>
                         </select>
                     </div>
-                    <div class="col-12 col-md-4 rowRight">
+                    <div class="col-12 col-md-3 rowRight">
                         <span class="h_lable ">Tahun Anggaran</span>
                         <select v-model="filterku.tahun" @change="cari_data()" class="bg-white">
                             <option value="">-- Tahun --</option>
                             <option v-for="data in $store.state.list_tahun" :key="data.id" :value="data.id">{{ data.id }}
                             </option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-3 rowRight">
+                        <span class="h_lable">Jenis Register</span>
+                        <select v-model="filterku.jenis_register" @change="cari_data()" class="bg-white">
+                            <option value="">-- SEMUA --</option>
+                            <option value="SPP">SPP</option>
+                            <option value="SPM">SPM</option>
+                            <option value="SP2D">SP2D</option>
                         </select>
                     </div>
                     
@@ -194,6 +204,15 @@
                                 <select class="bg-white margin_btn" v-model="form.tahun">
                                     <option v-for="data in $store.state.list_tahun" :key="data.id" :value="data.uraian">
                                         {{ data.uraian }}</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12 col-md-12 frame_cari ">
+                                <span class="h_lable">PILIH REGISTER</span>
+                                <select class="bg-white margin_btn" v-model="form.jenis_register">
+                                    <option value="SPP">SPP</option>
+                                    <option value="SPM">SPM</option>
+                                    <option value="SP2D">SP2D</option>
                                 </select>
                             </div>
 
@@ -339,13 +358,14 @@ export default {
                 nama_file: '',
                 keterangan: '',
                 file: null,
-                file_type: ''
+                file_type: '',
+                jenis_register: 'SPP'
             },
             filterku: {
-                urusan_kode: '',
                 tahun: '',
                 unit_kerja: '',
                 instansi: '',
+                jenis_register
             },
 
             selected_file: null, 

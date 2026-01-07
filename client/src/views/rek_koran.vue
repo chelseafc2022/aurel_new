@@ -342,7 +342,6 @@ export default {
                 file_type: ''
             },
             filterku: {
-                urusan_kode: '',
                 tahun: '',
                 unit_kerja: '',
                 instansi: '',
@@ -578,7 +577,7 @@ export default {
         this.form.tahun = year;
         this.filterku.tahun = year;
 
-        console.log(profile)
+        // console.log(profile)
 
 
         DATAMASTER.getTahun();

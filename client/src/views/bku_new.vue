@@ -340,7 +340,6 @@ export default {
                 file_type: ''
             },
             filterku: {
-                urusan_kode: '',
                 tahun: '',
                 unit_kerja: '',
                 instansi: '',
