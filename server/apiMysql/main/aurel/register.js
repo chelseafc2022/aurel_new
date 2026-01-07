@@ -189,11 +189,4 @@ router.post('/hapusData', (req, res) => {
 });
 
 
-
-
-
-
-
-
-
 module.exports = router;
