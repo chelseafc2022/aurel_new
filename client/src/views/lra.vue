@@ -4,8 +4,8 @@
             <q-card-section class="main1 text-white">
                 <div class="row">
                     <div class="col-12 col-md-6">
-                        <div class="text-h6 h_titleHead">DPA</div>
-                        <div class="text-subtitle2">Dokumen Pelaksanaan Anggaran</div>
+                        <div class="text-h6 h_titleHead">LRA</div>
+                        <div class="text-subtitle2">Laporan Realisasi Anggaran</div>
                     </div>
                     <div class="col-12 col-md-2"></div>
                     <div class="col-12 col-md-4">
@@ -178,7 +178,7 @@
         <q-dialog v-model="mdl_add" persistent>
             <q-card class="mdl-md">
                 <q-card-section class="main1">
-                    <div class="text-h6 h_modalhead">Tambah Data DPA</div>
+                    <div class="text-h6 h_modalhead">Tambah Data LRA</div>
                 </q-card-section>
 
                 <form @submit.prevent="addData()">
@@ -248,7 +248,7 @@
         <q-dialog v-model="mdl_edit" persistent>
             <q-card class="mdl-md">
                 <q-card-section class="bg-orange text-white">
-                    <div class="text-h6 h_modalhead">Edit Data DPA</div>
+                    <div class="text-h6 h_modalhead">Edit Data LRA</div>
                 </q-card-section>
 
                 <q-card-section class="q-pt-none">
@@ -390,7 +390,7 @@ export default {
 
         getView: function () {
             this.$store.commit("shoWLoading");
-            fetch(this.$store.state.url.DATA_DPA + "view", {
+            fetch(this.$store.state.url.DATA_LRA + "view", {
                 method: "POST",
                 headers: {
                     "content-type": "application/json",
@@ -428,7 +428,7 @@ export default {
             fd.append('form', JSON.stringify(this.form));
             fd.append('file', this.form.file);
 
-            fetch(this.$store.state.url.DATA_DPA + "addData", {
+            fetch(this.$store.state.url.DATA_LRA + "addData", {
                 method: "POST",
                 headers: {
                     authorization: "kikensbatara " + localStorage.token
@@ -458,7 +458,7 @@ export default {
                     fd.append('file', this.form.file);
                 }
 
-                fetch(this.$store.state.url.DATA_DPA + "editData", {
+                fetch(this.$store.state.url.DATA_LRA + "editData", {
                     method: "POST",
                     headers: {
                         authorization: "kikensbatara " + localStorage.token
@@ -489,7 +489,7 @@ export default {
                     file: this.form.file_old 
                 };
 
-                fetch(this.$store.state.url.DATA_DPA + "hapusData", {
+                fetch(this.$store.state.url.DATA_LRA + "hapusData", {
                     method: "POST",
                     headers: {
                         "content-type": "application/json",

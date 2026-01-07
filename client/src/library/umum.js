@@ -202,6 +202,38 @@ const statusNotice = (data) => {
     }
   }
 
+  
+const imageFileType = (data) =>{
+
+  if (data == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+      return 'doc.png'
+  } 
+
+  else if (data == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+      return 'xls.png'
+  } 
+  
+  else if (data == 'image/jpg' || data == 'image/jpeg') {
+      return 'jpg.png'
+  } 
+  else if (data == 'application/pdf') {
+      return 'pdf.png'
+  }
+  else if (data == 'image/png') {
+      return 'png.png'
+  }
+  else if (data == 'video/mp4' || data == 'video/webm' || data == 'video/mpeg' || data == 'video/quicktime' || data == 'video/H264') {
+      return 'video.png'
+  }
+  
+  
+  else{
+      return 'unknown.png'
+  }
+}
+
+
+
 module.exports = {
     tglConvert : tglConvert,
     addZeroDate : addZeroDate,
@@ -217,5 +249,7 @@ module.exports = {
     checkTextUtama : checkTextUtama,
 
     Rupiah : Rupiah,
-    statusNotice : statusNotice
+    statusNotice : statusNotice,
+    
+    imageFileType : imageFileType,
 }

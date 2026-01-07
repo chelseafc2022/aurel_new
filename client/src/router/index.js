@@ -90,6 +90,12 @@ function isLoggedIn(to, from, next) {
     beforeEnter: isLoggedIn,
   },
   {
+    path: '/lra',
+    name: 'LRA',
+    component: () => import('../views/lra.vue'),
+    beforeEnter: isLoggedIn,
+  },
+  {
     path: '/about',
     name: 'About',
     component: () => import('../views/About.vue'),
