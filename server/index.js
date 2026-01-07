@@ -210,6 +210,10 @@ app.use('/uploads', express.static(path.join(__dirname, './uploads')))
       app.use('/api/v1/bku_new', middleware.isLoggedIn, BKU_NEW);
       const REK = require('./apiMysql/main/aurel/rek_koran');
       app.use('/api/v1/rek_koran', middleware.isLoggedIn, REK);
+      const rekonPajak = require('./apiMysql/main/aurel/rekonPajak');
+      app.use('/api/v1/rekonPajak', middleware.isLoggedIn, rekonPajak);
+      const register = require('./apiMysql/main/aurel/register');
+      app.use('/api/v1/register', middleware.isLoggedIn, register);
 
 
 
