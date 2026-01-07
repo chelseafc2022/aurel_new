@@ -208,14 +208,14 @@
                             </div>
 
                             <div class="col-12 col-md-12 frame_cari ">
-                                <span class="h_lable ">UPLOAD FILE (PDF)</span>
+                                <span class="h_lable ">UPLOAD FILE (PDF, EXCEL)</span>
                                 <q-file 
                                     outlined 
                                     v-model="form.file" 
                                     square 
                                     :dense="true" 
                                     class="bg-white margin_btn"
-                                    accept=".pdf" 
+                                    accept=".pdf, .xls, .xlsx" 
                                 >
                                     <template v-slot:prepend>
                                         <q-icon name="attach_file" />
@@ -578,7 +578,7 @@ export default {
         this.form.tahun = year;
         this.filterku.tahun = year;
 
-        console.log(profile)
+        // console.log(profile)
 
 
         DATAMASTER.getTahun();

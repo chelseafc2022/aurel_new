@@ -578,7 +578,7 @@ export default {
         this.form.tahun = year;
         this.filterku.tahun = year;
 
-        console.log(profile)
+        // console.log(profile)
 
 
         DATAMASTER.getTahun();

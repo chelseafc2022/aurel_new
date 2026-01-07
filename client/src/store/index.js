@@ -99,6 +99,7 @@ export default new Vuex.Store({
       DATA_BKU: URL + 'api/v1/bku_new/',
       DATA_REK: URL + 'api/v1/rek_koran/',
       DATA_RP: URL + 'api/v1/rekonPajak/',
+      DATA_REGISTER: URL + 'api/v1/register/',
 
 
       

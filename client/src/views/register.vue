@@ -453,7 +453,7 @@ export default {
 
                 let fd = new FormData();
                 fd.append('form', JSON.stringify(this.form));
-                // Jika user memilih file baru, masukkan ke FormData
+               
                 if (this.form.file) {
                     fd.append('file', this.form.file);
                 }
@@ -471,7 +471,7 @@ export default {
                     this.$store.commit("hideLoading");
                     this.Notify('Sukses Memperbarui Data', 'warning', 'check_circle_outline');
                     this.mdl_edit = false;
-                    this.getView(); // Refresh list
+                    this.getView(); 
                 })
                 .catch(err => {
                     this.btn_add = false;
@@ -483,7 +483,6 @@ export default {
             removeData: function () {
                 this.$store.commit("shoWLoading");
                 
-                // Mengambil ID dan Nama File dari form yang sudah diisi saat klik tombol hapus di list
                 let data_hapus = {
                     id: this.form.id,
                     file: this.form.file_old 
@@ -501,8 +500,8 @@ export default {
                 .then(res_data => {
                     this.$store.commit("hideLoading");
                     this.Notify('Data berhasil dihapus', 'negative', 'delete');
-                    this.mdl_hapus = false; // Menutup modal
-                    this.getView(); // Refresh data di halaman
+                    this.mdl_hapus = false; 
+                    this.getView(); 
                 })
                 .catch(err => {
                     this.$store.commit("hideLoading");
@@ -578,7 +577,7 @@ export default {
         this.form.tahun = year;
         this.filterku.tahun = year;
 
-        console.log(profile)
+        // console.log(profile)
 
 
         DATAMASTER.getTahun();
