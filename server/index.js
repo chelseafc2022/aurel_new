@@ -202,6 +202,14 @@ app.use('/uploads', express.static(path.join(__dirname, './uploads')))
 
       const dpa = require('./apiMysql/main/aurel/dpa');
       app.use('/api/v1/dpa', middleware.isLoggedIn, dpa);
+      const lra = require('./apiMysql/main/aurel/lra');
+      app.use('/api/v1/lra', middleware.isLoggedIn, lra);
+      const lpj = require('./apiMysql/main/aurel/lpj');
+      app.use('/api/v1/lpj', middleware.isLoggedIn, lpj);
+      const BKU_NEW = require('./apiMysql/main/aurel/bku_new');
+      app.use('/api/v1/bku_new', middleware.isLoggedIn, BKU_NEW);
+      const REK = require('./apiMysql/main/aurel/rek_koran');
+      app.use('/api/v1/rek_koran', middleware.isLoggedIn, REK);
 
 
 
