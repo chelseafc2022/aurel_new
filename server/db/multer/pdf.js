@@ -35,14 +35,17 @@ var upload = multer({
         // cb(null, true);
 
 
-            if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg" || file.mimetype == "application/pdf") {
-                cb(null, true);
-            } else {
-                console.log('salah file')
-                // cb(null, false);
-                return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
-            }
-
+        if (
+            file.mimetype == "image/png" || 
+            file.mimetype == "application/pdf" || 
+            file.mimetype == "application/vnd.ms-excel" || // Untuk file .xls
+            file.mimetype == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" // Untuk file .xlsx
+        ) {
+            cb(null, true);
+        } else {
+            console.log('salah file');
+            return cb(new Error('Hanya format .png, .pdf, dan Excel (.xls, .xlsx) yang diperbolehkan!'));
+        }
 
             // if (path.extension(file.originalname) !== '.jpeg') {
             //     console.log('salah cess')
