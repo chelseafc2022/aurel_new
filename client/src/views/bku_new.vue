@@ -271,7 +271,7 @@
 
                         <div class="col-12 frame_cari">
                             <span class="h_lable">Update File (Kosongkan jika tidak diganti)</span>
-                            <q-file outlined v-model="form.file" square dense class="bg-white margin_btn" accept=".pdf">
+                            <q-file outlined v-model="form.file" square dense class="bg-white margin_btn" accept=".pdf, .xls, .xlsx" >
                                 <template v-slot:prepend><q-icon name="attach_file" /></template>
                             </q-file>
                             <div class="text-caption text-grey">File saat ini: {{ form.file_old }}</div>
@@ -332,11 +332,13 @@ export default {
         return {
 
             form: {
+                id : '',
                 unit_kerja: '',
                 tahun: new Date().getFullYear(),
                 nama_file: '',
                 keterangan: '',
                 file: null,
+                file_old: '',
                 file_type: ''
             },
             filterku: {

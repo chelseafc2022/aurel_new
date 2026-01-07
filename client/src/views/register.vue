@@ -89,7 +89,7 @@
 
                                 <div class="col-md-9 col-9 listDok" style="padding-left: 10px;">
                                     <a @click="previewFile(data)" href="javascript:void(0);" class="h_listDok1 h_clear1">
-                                        {{ data.nama_file }}
+                                        {{ data.nama_file }} / {{ data.jenis_register }}
                                     </a>
                                     <div class="h_listDok2" style="font-size: 11px; line-height: 1.2;">
                                         {{ data.unit_kerja_uraian }}
@@ -227,14 +227,14 @@
                             </div>
 
                             <div class="col-12 col-md-12 frame_cari ">
-                                <span class="h_lable ">UPLOAD FILE (PDF)</span>
+                                <span class="h_lable ">UPLOAD FILE (PDF, EXCEL)</span>
                                 <q-file 
                                     outlined 
                                     v-model="form.file" 
                                     square 
                                     :dense="true" 
                                     class="bg-white margin_btn"
-                                    accept=".pdf" 
+                                    accept=".pdf, .xls, .xlsx"
                                 >
                                     <template v-slot:prepend>
                                         <q-icon name="attach_file" />
@@ -263,7 +263,6 @@
         <!-- ================================================= MODAL TAMBAH ================================================ -->
 
 
-        <!-- ================================================= MODAL EDIT ================================================ -->
         <q-dialog v-model="mdl_edit" persistent>
             <q-card class="mdl-md">
                 <q-card-section class="bg-orange text-white">
@@ -281,6 +280,14 @@
                         </div>
 
                         <div class="col-12 frame_cari">
+                            <span class="h_lable">PILIH REGISTER</span>
+                            <select class="bg-white margin_btn" v-model="form.jenis_register">
+                                <option value="SPP">SPP</option>
+                                <option value="SPM">SPM</option>
+                                <option value="SP2D">SP2D</option>
+                            </select>
+                        </div>
+                        <div class="col-12 frame_cari">
                             <span class="h_lable">Nama File</span>
                             <q-input v-model="form.nama_file" outlined square dense class="bg-white margin_btn" /> 
                         </div>
@@ -292,7 +299,7 @@
 
                         <div class="col-12 frame_cari">
                             <span class="h_lable">Update File (Kosongkan jika tidak diganti)</span>
-                            <q-file outlined v-model="form.file" square dense class="bg-white margin_btn" accept=".pdf">
+                            <q-file outlined v-model="form.file" square dense class="bg-white margin_btn" accept=".pdf, .xls, .xlsx">
                                 <template v-slot:prepend><q-icon name="attach_file" /></template>
                             </q-file>
                             <div class="text-caption text-grey">File saat ini: {{ form.file_old }}</div>
@@ -306,8 +313,6 @@
                 </q-card-actions>
             </q-card>
         </q-dialog>
-        <!-- ================================================= MODAL EDIT ================================================ -->
-
         <!-- ================================================ MODAL HAPUS ================================================ -->
         <q-dialog v-model="mdl_hapus" persistent>
             <q-card class="mdl-sm">
@@ -353,19 +358,21 @@ export default {
         return {
 
             form: {
+                id: '',
                 unit_kerja: '',
                 tahun: new Date().getFullYear(),
                 nama_file: '',
                 keterangan: '',
                 file: null,
+                file_old: '',
                 file_type: '',
-                jenis_register: 'SPP'
+                jenis_register: 'SPP',
             },
             filterku: {
                 tahun: '',
                 unit_kerja: '',
                 instansi: '',
-                jenis_register
+                jenis_register:'',
             },
 
             selected_file: null, 
@@ -423,6 +430,7 @@ export default {
                     instansi: this.filterku.instansi,
                     unit_kerja: this.filterku.unit_kerja,
                     tahun: this.filterku.tahun,
+                    jenis_register: this.filterku.jenis_register,
                 })
             })
             .then(res => {
@@ -536,6 +544,7 @@ export default {
             this.form.nama_file = data.nama_file;
             this.form.keterangan = data.keterangan;
             this.form.unit_kerja = data.unit_kerja;
+            this.form.jenis_register = data.jenis_register;
             this.form.file_old = data.file; 
             this.form.file = null; 
         },

@@ -334,11 +334,13 @@ export default {
         return {
 
             form: {
+                id : '',
                 unit_kerja: '',
                 tahun: new Date().getFullYear(),
                 nama_file: '',
                 keterangan: '',
                 file: null,
+                file_old: '',
                 file_type: ''
             },
             filterku: {
