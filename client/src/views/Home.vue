@@ -9,9 +9,22 @@
           <div class="col-12 col-md-2"></div>
           <div class="col-12 col-md-4">
             <div class="row">
-              <q-select v-model="filterku.tahun" :options="list_tahun" option-label="label" option-value="value"
-                emit-value map-options outlined square :dense="true" class="bg-white" style="width:90%"
-                label="Tahun Anggaran" @update:model-value="onChangeTahun" />
+              <q-select
+                v-model="filterku.tahun"
+                :options="list_tahun"
+                option-label="label"
+                option-value="value"
+                emit-value
+                map-options
+                outlined
+                square
+                dense
+                class="bg-white"
+                style="width:90%"
+                label="Tahun Anggaran"
+              />
+
+
             </div>
           </div>
 
@@ -39,12 +52,12 @@
           <!-- OPD SUDAH UPLOAD -->
           <div class="col-12 col-md-4 frWidget">
             <div class="row shadow-5 frWidgetSub">
-              <div class="col-4 frWidgetSub1 text-center main6x row items-center justify-center">
+              <div class="col-4 frWidgetSub1 text-center main5x row items-center justify-center">
                 <q-icon name="cloud_done" style="font-size:420%; color:#faf6ed" />
               </div>
-              <div class="col-8 frWidgetSub2 main6">
-                <span class="frWidgetText1Dark">OPD Sudah Upload</span><br>
-                <span class="frWidgetText2Dark">{{ dashboard_opd.opd_sudah_upload }}</span>
+              <div class="col-8 frWidgetSub2 main5">
+                <span class="frWidgetText1">OPD Sudah Upload</span><br>
+                <span class="frWidgetText2">{{ dashboard_opd.opd_sudah_upload }}</span>
               </div>
             </div>
           </div>
@@ -52,10 +65,10 @@
           <!-- OPD BELUM UPLOAD -->
           <div class="col-12 col-md-4 frWidget">
             <div class="row shadow-5 frWidgetSub">
-              <div class="col-4 frWidgetSub1 text-center main3x row items-center justify-center">
+              <div class="col-4 frWidgetSub1 text-center main6x row items-center justify-center">
                 <q-icon name="cloud_off" style="font-size:420%; color:white" />
               </div>
-              <div class="col-8 frWidgetSub2 main3">
+              <div class="col-8 frWidgetSub2 main6">
                 <span class="frWidgetText1Dark">OPD Belum Upload</span><br>
                 <span class="frWidgetText2Dark">{{ dashboard_opd.opd_belum_upload }}</span>
               </div>
@@ -68,9 +81,9 @@
 
 
       <q-card-section class="biruSangatmudaGrad">
-        <div class="abuhitam">
+        <!-- <div class="abuhitam">
           GRAFIK UPLOAD DOKUMEN OPD BERDASARKAN MENU
-        </div>
+        </div> -->
 
         <q-inner-loading :showing="loadingChart">
           <q-spinner color="primary" size="40px" />
@@ -186,6 +199,8 @@ export default {
   methods: {
 
     onChangeTahun() {
+      console.log('INPUT TAHUN:', val)
+      this.filterku.tahun = val
       this.asyncFunc()
       this.loadChartMenu()
     },
@@ -217,6 +232,7 @@ export default {
     },
 
     async asyncFunc () {
+      console.log('REQUEST OPD DASHBOARD TAHUN:', this.filterku.tahun)
       try {
         const res = await fetch(
           this.$store.state.url.DASHBOARD + "opdDashboard",
@@ -244,6 +260,7 @@ export default {
     },
 
     async loadChartMenu () {
+      console.log('REQUEST CHART MENU TAHUN:', this.filterku.tahun)
       this.loadingChart = true
 
       try {
@@ -323,6 +340,19 @@ export default {
 
 
   },
+
+  watch: {
+      'filterku.tahun': {
+        immediate: false,
+        handler (val, oldVal) {
+          console.log('WATCH TAHUN:', oldVal, '→', val)
+
+          // PAKSA reload pakai nilai TERBARU
+          this.asyncFunc()
+          this.loadChartMenu()
+        }
+      }
+    },
 
   mounted() {
     var get_profile = JSON.parse(localStorage.profile);
