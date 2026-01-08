@@ -214,6 +214,8 @@ app.use('/uploads', express.static(path.join(__dirname, './uploads')))
       app.use('/api/v1/rekonPajak', middleware.isLoggedIn, rekonPajak);
       const register = require('./apiMysql/main/aurel/register');
       app.use('/api/v1/register', middleware.isLoggedIn, register);
+      const dashboard = require('./apiMysql/main/aurel/dashboard');
+      app.use('/api/v1/dashboard', middleware.isLoggedIn, dashboard);
 
 
 

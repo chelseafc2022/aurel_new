@@ -32,6 +32,11 @@ router.post('/view', (req, res) => {
     var data_batas = parseInt(req.body.page_limit) || 10;
     var data_star = (parseInt(req.body.data_ke) - 1) * data_batas;
     var cari = req.body.cari_value || "";
+
+    var register_filter = '';
+    if (req.body.jenis_register && req.body.jenis_register !== '') {
+        register_filter = ` AND register.jenis_register = '${req.body.jenis_register}' `;
+    }
     
     var unit_filter = '';
     if (req.body.unit_kerja && req.body.unit_kerja !== '') {
@@ -50,6 +55,7 @@ router.post('/view', (req, res) => {
         WHERE (register.nama_file LIKE '%${cari}%' OR register.keterangan LIKE '%${cari}%')
         ${unit_filter}
         ${tahun_filter}
+        ${register_filter}
     `;
 
     let view_query = `
@@ -59,6 +65,7 @@ router.post('/view', (req, res) => {
         WHERE (register.nama_file LIKE '%${cari}%' OR register.keterangan LIKE '%${cari}%')
         ${unit_filter}
         ${tahun_filter}
+        ${register_filter}
         ORDER BY register.createAt DESC
         LIMIT ${data_star}, ${data_batas}
     `;
@@ -94,6 +101,7 @@ router.post('/addData', upload.single("file"), (req, res) => {
             keterangan,
             file,
             file_type,
+            jenis_register,
             createAt,
             createBy
         )
@@ -106,6 +114,7 @@ router.post('/addData', upload.single("file"), (req, res) => {
             '`+form.keterangan+`',
             '`+file.filename+`',
             '`+file.mimetype+`',
+            '`+form.jenis_register+`',
             NOW(),
             '`+req.user._id+`'
         )
@@ -149,7 +158,8 @@ router.post('/editData', upload.single("file"), (req, res) => {
         UPDATE register SET
             tahun = ${form.tahun},
             nama_file = '${form.nama_file}',
-            keterangan = '${form.keterangan}'
+            keterangan = '${form.keterangan}',
+            jenis_register = '${form.jenis_register}'
             ${update_file_query}
         WHERE id = '${form.id}'
     `;
