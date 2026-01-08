@@ -37,18 +37,18 @@ function isLoggedIn(to, from, next) {
 
 
 
-  // {
-  //   path: '/',
-  //   name: 'Home',
-  //   component: Home,
-  //   beforeEnter: isLoggedIn,
-  // },
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/dataMaster/masterProgram.vue'),
+    component: Home,
     beforeEnter: isLoggedIn,
   },
+  // {
+  //   path: '/',
+  //   name: 'Home',
+  //   component: () => import('../views/dataMaster/masterProgram.vue'),
+  //   beforeEnter: isLoggedIn,
+  // },
 
 
   {

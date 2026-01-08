@@ -129,7 +129,7 @@
 
         <div v-if="selected_file" class="q-mt-lg">
             <q-card bordered>
-                <q-card-section class="bg-blue-grey-10 text-white row items-center">
+                <q-card-section class="main1x text-white row items-center">
                     <div class="text-subtitle1">
                         <q-icon name="description" /> Preview: {{ selected_file_name }} 
                         <span class="text-caption text-grey-4">({{ selected_file }})</span>
@@ -539,11 +539,6 @@ export default {
             console.log(this.filterku.unit_kerja);
             this.getView();
         },
-
-
-
-
-
 
 
         // ====================================== PAGINATE ====================================
