@@ -68,38 +68,19 @@
 
 
       <q-card-section class="biruSangatmudaGrad">
-        <div class="row">
-          <div class="col-12 col-md-6" style="padding:2%;">
-            <div class="abuhitam">
-              GLOBAL UPLOAD FILE BERDASARKAN BULAN TAHUN 2022
-            </div>
-            <br>
-            <div id="chart1" style="height:500px"></div>
-          </div>
-
-          <div class="col-12 col-md-6" style="padding:2%;">
-            <div class="abuhitam">
-              JUMLAH UPLOAD GLOBAL OPD TAHUN 2023<br><br>
-            </div>
-            <div style="height:500px; overflow:auto;">
-              <table style="width:100%">
-                <thead style="background:#025464">
-                  <tr class="h_table_head text-white">
-                    <th class="text-left" style="width:80%" color="#faf6ed">Nama Unit Kerja</th>
-                    <th class="text-center" style="width:20%">Jml File</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="data in list_opd_upload" :key="data.id">
-                    <td>{{ data.unit_kerja }}</td>
-                    <td class="text-center">{{ data.jml }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+        <div class="abuhitam">
+          GRAFIK UPLOAD DOKUMEN OPD BERDASARKAN MENU
         </div>
+
+        <q-inner-loading :showing="loadingChart">
+          <q-spinner color="primary" size="40px" />
+        </q-inner-loading>
+
+        <div id="chartMenu" style="height:500px;"></div>
       </q-card-section>
+
+
+
     </q-card>
 
 
@@ -166,6 +147,9 @@ export default {
   },
   data() {
     return {
+      chartMenu: null,
+      loadingChart: false,
+
       filterku: {
         instansi_id: '',
         unit_kerja_id: '',
@@ -202,8 +186,8 @@ export default {
   methods: {
 
     onChangeTahun() {
-      // reload semua data dashboard berdasarkan tahun
       this.asyncFunc()
+      this.loadChartMenu()
     },
 
     chart1: function (chartku, dn) {
@@ -232,18 +216,108 @@ export default {
 
     },
 
-    asyncFunc: async function () {
-      const res = await this.FETCHING.dashboardPost(
-        this.filterku.unit_kerja_id,
-        this.trista_monev,
-        'dashboardOPD',
-        this.filterku.tahun
-      )
+    async asyncFunc () {
+      try {
+        const res = await fetch(
+          this.$store.state.url.DASHBOARD + "opdDashboard",
+          {
+            method: 'POST',
+            headers: {
+              "content-type": "application/json",
+                authorization: "kikensbatara " + localStorage.token
+            },
+            body: JSON.stringify({
+              tahun: this.filterku.tahun
+            })
+          }
+        )
 
-      this.dashboard_opd.total_opd = res.total_opd
-      this.dashboard_opd.opd_sudah_upload = res.opd_sudah_upload
-      this.dashboard_opd.opd_belum_upload = res.opd_belum_upload
+        const data = await res.json()
+
+        this.dashboard_opd.total_opd = data.total_opd
+        this.dashboard_opd.opd_sudah_upload = data.opd_sudah_upload
+        this.dashboard_opd.opd_belum_upload = data.opd_belum_upload
+
+      } catch (err) {
+        console.error('Gagal load dashboard OPD', err)
+      }
+    },
+
+    async loadChartMenu () {
+      this.loadingChart = true
+
+      try {
+        const res = await fetch(
+          this.$store.state.url.DASHBOARD + "menu-drilldown",
+          {
+            method: 'POST',
+            headers: {
+              "content-type": "application/json",
+              authorization: "kikensbatara " + localStorage.token
+            },
+            body: JSON.stringify({
+              tahun: this.filterku.tahun
+            })
+          }
+        )
+
+        const data = await res.json()
+
+        this.$nextTick(() => {
+          this.renderChartMenu(data)
+        })
+
+      } catch (err) {
+        console.error('Gagal load chart menu', err)
+      } finally {
+        this.loadingChart = false
+      }
+    },
+
+  renderChartMenu (chartData) {
+    if (this.chartMenu) {
+      this.chartMenu.destroy()
     }
+
+    this.chartMenu = Highcharts.chart('chartMenu', {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: 'Upload Dokumen OPD per Menu'
+      },
+      subtitle: {
+        text: `Tahun ${this.filterku.tahun}`
+      },
+      xAxis: {
+        type: 'category'
+      },
+      yAxis: {
+        title: {
+          text: 'Jumlah OPD'
+        }
+      },
+      legend: {
+        enabled: false
+      },
+      plotOptions: {
+        series: {
+          borderWidth: 0,
+          dataLabels: {
+            enabled: true
+          }
+        }
+      },
+      tooltip: {
+        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        pointFormat:
+          '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> OPD<br/>'
+      },
+
+      series: chartData.series,
+      drilldown: chartData.drilldown
+    })
+  }
 
 
 
@@ -256,8 +330,8 @@ export default {
     this.filterku.unit_kerja_id = get_profile.profile.unit_kerja;
     this.trista_monev = get_profile.profile.trista_monev;
 
-
     this.asyncFunc();
+    this.loadChartMenu()
 
   },
 }

@@ -12,12 +12,7 @@
                         <div class="row">
                             <q-input v-model="cari_value" @keyup="cari_data()" outlined square :dense="true"
                                 class="bg-white" style="width:90%" />
-                            <q-btn glossy class="bg-orange-5" @click="mdl_add = true" dense flat icon="add"
-                                style="width:10%">
-                                <q-tooltip content-class="bg-orange-5" content-style="font-size: 13px">
-                                    Click untuk menambah data
-                                </q-tooltip>
-                            </q-btn>
+                           
                         </div>
 
                     </div>
