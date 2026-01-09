@@ -78,19 +78,8 @@
         </div>
       </q-card-section>
 
-
-
       <q-card-section class="biruSangatmudaGrad">
-        <q-inner-loading :showing="loadingChart">
-          <q-spinner color="primary" size="40px" />
-        </q-inner-loading>
-
-        <div id="chartMenu" style="height:500px;"></div>
-      </q-card-section>
-
-
-      <q-card-section class="biruSangatmudaGrad">
-        <div class="abuhitam">HEATMAP KELENGKAPAN OPD</div>
+        <div class="heatmap-title">HEATMAP KELENGKAPAN OPD</div>
 
         <q-inner-loading :showing="loadingHeatmap">
           <q-spinner color="primary" size="40px" />
@@ -129,6 +118,19 @@
           </div>
         </div>
       </q-card-section>
+
+
+
+      <q-card-section class="biruSangatmudaGrad">
+        <q-inner-loading :showing="loadingChart">
+          <q-spinner color="primary" size="40px" />
+        </q-inner-loading>
+
+        <div id="chartMenu" style="height:500px;"></div>
+      </q-card-section>
+
+
+      
 
 
 
