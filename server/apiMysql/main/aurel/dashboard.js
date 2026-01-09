@@ -14,7 +14,14 @@ router.post('/opdDashboard', (req, res) => {
         SELECT COUNT(*) AS total_opd
         FROM simpeg.unit_kerja
         WHERE status = 1
-    `;
+            AND (
+            unit_kerja LIKE 'DINAS%'
+            OR unit_kerja LIKE 'BADAN%'
+            OR unit_kerja LIKE 'BAGIAN%'
+            OR unit_kerja LIKE 'INSPEKTORAT%'
+            )
+        `;
+
 
     // 2. OPD Sudah Upload (distinct unit kerja)
     const opdUploadQuery = `
@@ -22,8 +29,15 @@ router.post('/opdDashboard', (req, res) => {
         FROM dpa
         JOIN simpeg.unit_kerja uk ON dpa.unit_kerja = uk.id
         WHERE dpa.tahun = ?
-        AND uk.status = 1
-    `;
+            AND uk.status = 1
+            AND (
+            uk.unit_kerja LIKE 'DINAS%'
+            OR uk.unit_kerja LIKE 'BADAN%'
+            OR uk.unit_kerja LIKE 'BAGIAN%'
+            OR uk.unit_kerja LIKE 'INSPEKTORAT%'
+            )
+        `;
+
 
     db.query(totalOpdQuery, (err, totalResult) => {
         if (err) {
