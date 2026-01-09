@@ -57,13 +57,18 @@ router.post('/menu-drilldown', async (req, res) => {
     if (!tahun) return res.status(400).json({ message: 'tahun wajib' });
 
     const menus = [
-        { key: 'dpa', label: 'DPA', table: 'dpa' },
-        { key: 'lpj', label: 'LPJ', table: 'lpj' },
-        { key: 'lra', label: 'LRA', table: 'lra' },
-        { key: 'register', label: 'REGISTER', table: 'register' },
-        { key: 'rekonPajak', label: 'REKON PAJAK', table: 'rekonPajak' },
-        { key: 'rek_koran', label: 'REKON KORAN', table: 'rek_koran' }
-    ];
+        { key: 'DPA', table: 'dpa' },
+        { key: 'LPJ', table: 'lpj' },
+        { key: 'LRA', table: 'lra' },
+      
+        // REGISTER TURUNAN
+        { key: 'SPP', table: 'register', type: 'SPP' },
+        { key: 'SPM', table: 'register', type: 'SPM' },
+        { key: 'SP2D', table: 'register', type: 'SP2D' },
+      
+        { key: 'REKON PAJAK', table: 'rekonPajak' },
+        { key: 'REKON KORAN', table: 'rek_koran' }
+      ];
 
     let seriesData = [];
     let drilldownSeries = [];
@@ -127,6 +132,110 @@ router.post('/menu-drilldown', async (req, res) => {
         }
     });
 });
+
+router.post('/heatmap-opd', async (req, res) => {
+    try {
+      const { tahun } = req.body;
+      if (!tahun) {
+        return res.status(400).json({ message: 'tahun wajib diisi' });
+      }
+  
+      // ===============================
+      // DEFINISI MENU & TABEL
+      // ===============================
+      const MENUS = [
+        { key: 'DPA', table: 'dpa' },
+        { key: 'LPJ', table: 'lpj' },
+        { key: 'LRA', table: 'lra' },
+      
+        // REGISTER TURUNAN
+        { key: 'SPP', table: 'register', type: 'SPP' },
+        { key: 'SPM', table: 'register', type: 'SPM' },
+        { key: 'SP2D', table: 'register', type: 'SP2D' },
+      
+        { key: 'REKON PAJAK', table: 'rekonPajak' },
+        { key: 'REKENING KORAN', table: 'rek_koran' }
+      ];
+  
+      const opdList = await new Promise((resolve, reject) => {
+        db.query(
+          `
+          SELECT id, unit_kerja
+            FROM simpeg.unit_kerja
+            WHERE status = 1
+            AND (
+            unit_kerja LIKE '%DINAS%'
+            OR unit_kerja LIKE '%BADAN%'
+            OR unit_kerja LIKE '%BAGIAN%'
+            OR unit_kerja LIKE '%INSPEKTORAT%'
+            )
+            ORDER BY unit_kerja ASC
+
+          `,
+          (err, rows) => {
+            if (err) reject(err);
+            else resolve(rows);
+          }
+        );
+      });
+  
+      let result = [];
+  
+      for (const opd of opdList) {
+        let status = {};
+        let score = 0;
+  
+        // LOOP MENU
+        for (const m of MENUS) {
+            const exists = await new Promise((resolve, reject) => {
+              let sql = `
+                SELECT 1
+                FROM ${m.table}
+                WHERE tahun = ?
+                AND unit_kerja = ?
+              `;
+          
+              let params = [tahun, opd.id];
+          
+              // KHUSUS REGISTER (SPP / SPM / SP2D)
+              if (m.type) {
+                sql += ` AND jenis_register = ?`;
+                params.push(m.type);
+              }
+          
+              sql += ` LIMIT 1`;
+          
+              db.query(sql, params, (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows.length > 0);
+              });
+            });
+          
+            status[m.key] = exists;
+            if (exists) score++;
+          }
+          
+  
+        result.push({
+          opd: opd.unit_kerja,
+          score: score,
+          status: status
+        });
+      }
+  
+      result.sort((a, b) => b.score - a.score);
+  
+      res.json({
+        tahun: tahun,
+        menus: MENUS.map(m => m.key),
+        data: result
+      });
+  
+    } catch (err) {
+      console.error('ERROR heatmap-opd:', err);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  });
 
 
 module.exports = router;
