@@ -97,31 +97,36 @@
         </q-inner-loading>
 
         <div style="overflow:auto">
-          <table class="heatmap-table">
-            <thead>
-              <tr>
-                <th>OPD</th>
-                <th v-for="m in heatmap.menus" :key="m">{{ m }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="row in heatmap.data" :key="row.opd">
-                <td class="opd-name">{{ row.opd }}</td>
+          <div class="heatmap-wrapper">
 
-                <td
-                  v-for="m in heatmap.menus"
-                  :key="m"
-                  :class="row.status[m] ? 'cell-ok' : 'cell-no'"
-                >
+            <table class="heatmap-table">
+              <thead>
+                <tr>
+                  <th>OPD</th>
+                  <th v-for="m in heatmap.menus" :key="m">{{ m }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="row in heatmap.data" :key="row.opd">
+                  <td class="opd-name">{{ row.opd }}</td>
+  
+                  <td
+                    v-for="m in heatmap.menus"
+                    :key="m"
+                    :class="row.status[m] ? 'cell-ok' : 'cell-no'"
+                  >
                   <q-icon
                     v-if="row.status[m]"
-                    name="check"
-                    size="16px"
+                    name="check_circle"
+                    size="18px"
+                    color="green-7"
                   />
-                </td>
-              </tr>
-            </tbody>
-          </table>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </q-card-section>
 
@@ -228,6 +233,7 @@ export default {
       this.filterku.tahun = val
       this.asyncFunc()
       this.loadChartMenu()
+      this.loadHeatmap()
     },
 
     chart1: function (chartku, dn) {
@@ -373,6 +379,7 @@ export default {
           console.log('WATCH TAHUN:', oldVal, '→', val)
           this.asyncFunc()
           this.loadChartMenu()
+          this.loadHeatmap()
         }
       }
     },
@@ -385,6 +392,7 @@ export default {
 
     this.asyncFunc();
     this.loadChartMenu()
+    this.loadHeatmap()
 
   },
 }
