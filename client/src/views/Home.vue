@@ -81,16 +81,50 @@
 
 
       <q-card-section class="biruSangatmudaGrad">
-        <!-- <div class="abuhitam">
-          GRAFIK UPLOAD DOKUMEN OPD BERDASARKAN MENU
-        </div> -->
-
         <q-inner-loading :showing="loadingChart">
           <q-spinner color="primary" size="40px" />
         </q-inner-loading>
 
         <div id="chartMenu" style="height:500px;"></div>
       </q-card-section>
+
+
+      <q-card-section class="biruSangatmudaGrad">
+        <div class="abuhitam">HEATMAP KELENGKAPAN OPD</div>
+
+        <q-inner-loading :showing="loadingHeatmap">
+          <q-spinner color="primary" size="40px" />
+        </q-inner-loading>
+
+        <div style="overflow:auto">
+          <table class="heatmap-table">
+            <thead>
+              <tr>
+                <th>OPD</th>
+                <th v-for="m in heatmap.menus" :key="m">{{ m }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in heatmap.data" :key="row.opd">
+                <td class="opd-name">{{ row.opd }}</td>
+
+                <td
+                  v-for="m in heatmap.menus"
+                  :key="m"
+                  :class="row.status[m] ? 'cell-ok' : 'cell-no'"
+                >
+                  <q-icon
+                    v-if="row.status[m]"
+                    name="check"
+                    size="16px"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </q-card-section>
+
 
 
 
@@ -100,52 +134,10 @@
 
 
 
-    <!-- =================================================== MODAL =========================================================== -->
-    <!-- <q-dialog v-model="alert" persistent>
-                <q-card class="mdl-md">
-                  <q-card-section class="bg-primary">
-                    <div class="text-h6 h_modalhead">Simpan Data</div>
-                  </q-card-section>
-
-                  <q-card-section class="q-pt-none">
-                        <br>
-                        <span class="h_lable ">Input Nama</span>
-                        <q-input outlined square :dense="true" class="bg-white margin_btn" /> 
-
-                        <span class="h_lable ">Input Nama</span>
-                        <q-select v-model="model" :options="inputSelect" option-value="id" option-label="nama" outlined square :dense="true" class="bg-white margin_btn"/>
-
-                        <span class="h_lable ">Cari File</span>
-                        <q-file outlined v-model="model" square :dense="true" class="bg-white margin_btn">
-                          <template v-slot:prepend>
-                            <q-icon name="attach_file" />
-                          </template>
-</q-file>
-</q-card-section>
-
-<q-card-actions class="bg-grey-4 mdl-footer" align="right">
-
-  <q-btn :loading="simpan1" color="primary" @click="simulateProgress(1)" label="Simpan" />
-  <q-btn label="Batal" color="negative" v-close-popup />
-
-</q-card-actions>
-</q-card>
-</q-dialog> -->
-
-
-
-
-    <!-- =================================================== MODAL =========================================================== -->
-
-
-
-
   </div>
 </template>
 
 <script>
-// import Logo from '~/components/Logo.vue'
-// import VuetifyLogo from '~/components/VuetifyLogo.vue'
 
 
 import FETCHING from "../library/fetching";
@@ -155,11 +147,16 @@ import UMUM from "../library/umum.js";
 
 export default {
   components: {
-    // Logo,
-    // VuetifyLogo
   },
   data() {
     return {
+
+      heatmap: {
+      menus: [],
+      data: []
+        },
+      loadingHeatmap: false,
+      
       chartMenu: null,
       loadingChart: false,
 
@@ -197,6 +194,34 @@ export default {
   },
 
   methods: {
+
+    async loadHeatmap () {
+      this.loadingHeatmap = true
+      try {
+        const res = await fetch(
+          this.$store.state.url.DASHBOARD + 'heatmap-opd',
+          {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json',
+              authorization: 'kikensbatara ' + localStorage.token
+            },
+            body: JSON.stringify({
+              tahun: this.filterku.tahun
+            })
+          }
+        )
+
+        const data = await res.json()
+        this.heatmap = data
+
+      } catch (e) {
+        console.error('Gagal load heatmap', e)
+      } finally {
+        this.loadingHeatmap = false
+      }
+    },
+
 
     onChangeTahun() {
       console.log('INPUT TAHUN:', val)
@@ -346,8 +371,6 @@ export default {
         immediate: false,
         handler (val, oldVal) {
           console.log('WATCH TAHUN:', oldVal, '→', val)
-
-          // PAKSA reload pakai nilai TERBARU
           this.asyncFunc()
           this.loadChartMenu()
         }

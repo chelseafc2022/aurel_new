@@ -261,3 +261,32 @@ input.mdCheckbox1 {
   display: flex;
   align-items: center;
 }
+
+.heatmap-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.heatmap-table th,
+.heatmap-table td {
+  border: 1px solid #ddd;
+  padding: 6px;
+  text-align: center;
+}
+
+.opd-name {
+  text-align: left;
+  font-weight: 600;
+  background: #f5f5f5;
+}
+
+.cell-ok {
+  background-color: #4caf50;
+  color: white;
+}
+
+.cell-no {
+  background-color: #f0f0f0;
+}
+
