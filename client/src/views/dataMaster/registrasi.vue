@@ -87,8 +87,8 @@
                 <th width="5%" class="text-center">No</th>
                 <th width="40%">Nama</th>
                 <th width="15%">Username</th>
-                <th width="15%" class="text-center">Jadwal</th>
-                <th width="15%">Kontak</th>
+                <!-- <th width="15%" class="text-center">Jadwal</th>
+                <th width="15%">Kontak</th> -->
                 <th width="10%"></th>
               </tr>
 
@@ -101,15 +101,15 @@
                   </b>
                 </td>
                 <td>{{data.username}}</td>
-                <td class="text-center">{{UMUM.jadwalAbsen(data.metode_absen)}}</td>
-                <td>
+                <!-- <td class="text-center">{{UMUM.jadwalAbsen(data.metode_absen)}}</td> -->
+                <!-- <td>
                   {{data.email}} <br>
                   <span class="h_nip">Hp. {{data.hp}}</span>
-                </td>
+                </td> -->
                
                 <td class="text-center">
                   <q-btn-group>
-                    <q-btn @click="mdl_password = true, selectData(data)" glossy color="blue" icon="vpn_key" class="tbl_btn">
+                    <q-btn disable @click="mdl_password = true, selectData(data)" glossy color="blue" icon="vpn_key" class="tbl_btn">
                       <q-tooltip content-class="bg-blue-9" content-style="font-size: 13px">
                         Click untuk mengubah password pengguna ini
                       </q-tooltip>
@@ -119,7 +119,7 @@
                         Click untuk mengubah data ini
                       </q-tooltip>
                     </q-btn>
-                    <q-btn @click="mdl_hapus = true, selectData(data)" glossy color="negative" icon="delete_forever" class="tbl_btn">
+                    <q-btn disable @click="mdl_hapus = true, selectData(data)" glossy color="negative" icon="delete_forever" class="tbl_btn">
                       <q-tooltip content-class="bg-red" content-style="font-size: 13px">
                         Click untuk menghapus data ini
                       </q-tooltip>
