@@ -71,6 +71,7 @@ router.post('/menu-drilldown', async (req, res) => {
     if (!tahun) return res.status(400).json({ message: 'tahun wajib' });
 
     const menus = [
+        { key: 'BKU', table: 'bku_new' },
         { key: 'DPA', table: 'dpa' },
         { key: 'LPJ', table: 'lpj' },
         { key: 'LRA', table: 'lra' },
@@ -158,6 +159,7 @@ router.post('/heatmap-opd', async (req, res) => {
       // DEFINISI MENU & TABEL
       // ===============================
       const MENUS = [
+        { key: 'BKU', table: 'bku_new' },
         { key: 'DPA', table: 'dpa' },
         { key: 'LPJ', table: 'lpj' },
         { key: 'LRA', table: 'lra' },
