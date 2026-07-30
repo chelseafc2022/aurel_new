@@ -77,7 +77,7 @@
                                     </a>
                                 </div>
 
-                                <div class="col-md-9 col-9 listDok" style="padding-left: 10px;">
+                                <div class="col-md-9 col-9 listDok" style="padding-left: 10px; padding-right: 75px;">
                                     <a @click="previewFile(data)" href="javascript:void(0);" class="h_listDok1 h_clear1">
                                         {{ data.nama_file }}
                                     </a>
@@ -87,6 +87,22 @@
                                     <div class="h_listDok3">
                                         <q-icon name="event" /> {{ UMUM.tglConvert(data.createAt) }}
                                     </div>
+                                    <div v-if="data.status_approval === 2 && data.catatan_revisi" class="text-caption text-red-9 q-mt-xs" style="font-size: 10px;">
+                                        <strong>Catatan Revisi:</strong> {{ data.catatan_revisi }}
+                                    </div>
+                                </div>
+
+                                <!-- STATUS BADGE SEBELAH KANAN -->
+                                <div style="position: absolute; top: 6px; right: 32px;">
+                                    <q-chip v-if="data.status_approval === 0 || data.status_approval == null" color="orange-8" text-color="white" dense icon="hourglass_top" style="font-size:10px; margin: 0;">
+                                        Proses
+                                    </q-chip>
+                                    <q-chip v-else-if="data.status_approval === 1" color="green-8" text-color="white" dense icon="check_circle" style="font-size:10px; margin: 0;">
+                                        Disetujui
+                                    </q-chip>
+                                    <q-chip v-else-if="data.status_approval === 2" color="red-8" text-color="white" dense icon="cancel" style="font-size:10px; margin: 0;">
+                                        Ditolak
+                                    </q-chip>
                                 </div>
 
                                 <div class="listDok_setting">

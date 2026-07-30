@@ -1,90 +1,90 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import { Loading,  QSpinnerFacebook,  } from 'quasar'
+import { Loading, QSpinnerFacebook, } from 'quasar'
 import { Notify } from 'quasar'
 
 Vue.use(Vuex)
 
-var URL = 'http://localhost:5071/'
+// var URL = 'http://localhost:5071/'
 // var URL = 'http://localhost:5035/'
 // var URL = 'http://192.168.1.8:5028/'
 // var URL = 'https://servermonev.konaweselatankab.go.id/'
-// var URL = 'https://server.aurel.konaweselatankab.go.id/'
+var URL = 'https://server.aurel.konaweselatankab.go.id/'
 
 export default new Vuex.Store({
   state: {
-    namaApp : 'Aurel - Elektronik Audit dan Review Laporan',
+    namaApp: 'Aurel - Elektronik Audit dan Review Laporan',
     // namaApp : 'Monitoring - Evaluasi Pembangunan',
-    colorx : {
-      satu : '#191A32',
-      dua : '#FDDDE1',
-      tiga : '#FFEDD2',
-      empat : '#CFD5F8',
+    colorx: {
+      satu: '#191A32',
+      dua: '#FDDDE1',
+      tiga: '#FFEDD2',
+      empat: '#CFD5F8',
     },
-    btn : {
-      add : false,
-      edit : false,
-      remove : false,
+    btn: {
+      add: false,
+      edit: false,
+      remove: false,
     },
-    url : {
-      URL_APP : URL,
+    url: {
+      URL_APP: URL,
 
 
-      URL_tahun : URL+'api/v1/dm_tahun/', 
-      URL_simpeg_biodata : URL+'api/v1/dm_biodata/',
-      URL_simpeg_unit_kerja: URL+'api/v1/dm_unitKerja/',
-      URL_simpeg_unit_kerja_kode: URL+'api/v1/unitKerjaKode/',
-      URL_simpeg_instansi : URL+'api/v1/dm_instansi/',
+      URL_tahun: URL + 'api/v1/dm_tahun/',
+      URL_simpeg_biodata: URL + 'api/v1/dm_biodata/',
+      URL_simpeg_unit_kerja: URL + 'api/v1/dm_unitKerja/',
+      URL_simpeg_unit_kerja_kode: URL + 'api/v1/unitKerjaKode/',
+      URL_simpeg_instansi: URL + 'api/v1/dm_instansi/',
 
-      URL_DM_REGISTER : URL+'api/v1/dm_registrasi/',
-      URL_DM_MENU : URL+'api/v1/dm_menuList/',
-      URL_DM_KLP_USERS : URL+'api/v1/dm_kelompokUsers/',
-      checkAuth : URL + 'api/v1/checkAuth/',
+      URL_DM_REGISTER: URL + 'api/v1/dm_registrasi/',
+      URL_DM_MENU: URL + 'api/v1/dm_menuList/',
+      URL_DM_KLP_USERS: URL + 'api/v1/dm_kelompokUsers/',
+      checkAuth: URL + 'api/v1/checkAuth/',
 
-      URL_DM_URUSAN : URL+'api/v1/dm_urusan/',
-      URL_DM_URUSAN_BIDANG : URL+'api/v1/dm_urusan_bidang/',
+      URL_DM_URUSAN: URL + 'api/v1/dm_urusan/',
+      URL_DM_URUSAN_BIDANG: URL + 'api/v1/dm_urusan_bidang/',
 
-      RL_DM_PROGRAM : URL+'api/v1/dm_program/',
-      RL_DM_KEGIATAN : URL+'api/v1/dm_kegiatan/',
-      RL_DM_KEGIATAN_SUB : URL+'api/v1/kegiatan_sub/',
+      RL_DM_PROGRAM: URL + 'api/v1/dm_program/',
+      RL_DM_KEGIATAN: URL + 'api/v1/dm_kegiatan/',
+      RL_DM_KEGIATAN_SUB: URL + 'api/v1/kegiatan_sub/',
 
-      RL_DM_SUMBER_DANA : URL+'api/v1/dm_sumber_dana/',
-      RL_DM_MASTER_PERMINTAAN : URL+'api/v1/dm_master_permintaan/',
+      RL_DM_SUMBER_DANA: URL + 'api/v1/dm_sumber_dana/',
+      RL_DM_MASTER_PERMINTAAN: URL + 'api/v1/dm_master_permintaan/',
 
 
-      CT_PROGRAM : URL+'api/v1/ct_program/',
-      CT_KEGIATAN : URL+'api/v1/ct_kegiatan/',
-      CT_KEGIATAN_SUB : URL+'api/v1/ct_kegiatan_sub/',
-      CT_KEGIATAN_SUB_TAG : URL+'api/v1/ct_kegiatan_sub_tag/',
-      CT_KEGIATAN_SUB_LABEL : URL+'api/v1/ct_kegiatan_sub_label/',
-      CT_KEGIATAN_SUB_RINCIAN : URL+'api/v1/ct_kegiatan_sub_rincian/',
-      CT_KEGIATAN_SUB_RINCIAN_NEW : URL+'api/v1/ct_kegiatan_sub_rincian_new/',
-      CT_TARGET_KEUANGAN : URL+'api/v1/ct_target_keuangan/',
-      CT_TARGET_FISIK : URL+'api/v1/ct_target_fisik/',
-      CT_REALISASI_FISIK : URL+'api/v1/ct_realiasi_fisik/',
-      CT_REALISASI_KEUANGAN : URL+'api/v1/ct_realiasi_keuangan/',
-      CT_REALISASI_KEUANGAN_SERAPAN : URL+'api/v1/ct_realiasi_keuangan_serapan/',
+      CT_PROGRAM: URL + 'api/v1/ct_program/',
+      CT_KEGIATAN: URL + 'api/v1/ct_kegiatan/',
+      CT_KEGIATAN_SUB: URL + 'api/v1/ct_kegiatan_sub/',
+      CT_KEGIATAN_SUB_TAG: URL + 'api/v1/ct_kegiatan_sub_tag/',
+      CT_KEGIATAN_SUB_LABEL: URL + 'api/v1/ct_kegiatan_sub_label/',
+      CT_KEGIATAN_SUB_RINCIAN: URL + 'api/v1/ct_kegiatan_sub_rincian/',
+      CT_KEGIATAN_SUB_RINCIAN_NEW: URL + 'api/v1/ct_kegiatan_sub_rincian_new/',
+      CT_TARGET_KEUANGAN: URL + 'api/v1/ct_target_keuangan/',
+      CT_TARGET_FISIK: URL + 'api/v1/ct_target_fisik/',
+      CT_REALISASI_FISIK: URL + 'api/v1/ct_realiasi_fisik/',
+      CT_REALISASI_KEUANGAN: URL + 'api/v1/ct_realiasi_keuangan/',
+      CT_REALISASI_KEUANGAN_SERAPAN: URL + 'api/v1/ct_realiasi_keuangan_serapan/',
 
-      CT_TARGET_PEMBANGUNAN : URL+'api/v1/ct_target_pembangunan/',
-      CT_REALISASI_PEMBANGUNAN : URL+'api/v1/ct_realisasi_pembangunan/',
+      CT_TARGET_PEMBANGUNAN: URL + 'api/v1/ct_target_pembangunan/',
+      CT_REALISASI_PEMBANGUNAN: URL + 'api/v1/ct_realisasi_pembangunan/',
 
 
       // ======================== AUREL ========================
 
       URL_direktorireviu: URL + 'api/v1/direktorireviu/',
-      URL_filereviu: URL + 'api/v1/filereviu/', 
+      URL_filereviu: URL + 'api/v1/filereviu/',
       URL_kkr: URL + 'api/v1/kkr/',
       URL_lhr: URL + 'api/v1/reviuLhr/',
       URL_publish: URL + 'api/v1/publishLhr/',
-      checkAuth : URL + 'api/v1/checkAuth/',
+      checkAuth: URL + 'api/v1/checkAuth/',
 
-      ARL_DM_masterPPH : URL+'api/v1/masterPPH/',
-      ARL_DM_masterPJ : URL+'api/v1/masterPJ/',
+      ARL_DM_masterPPH: URL + 'api/v1/masterPPH/',
+      ARL_DM_masterPJ: URL + 'api/v1/masterPJ/',
 
       // ======================== AUREL ========================
 
-      CT_LAMPIRAN : URL+'api/v1/ct_lampiran/',
+      CT_LAMPIRAN: URL + 'api/v1/ct_lampiran/',
 
       URL_rek: URL + 'api/v1/rekening/',
       URL_bku: URL + 'api/v1/bku/',
@@ -92,7 +92,7 @@ export default new Vuex.Store({
       URL_kkr: URL + 'api/v1/kkr/',
       URL_saldo: URL + 'api/v1/saldo/',
 
- // ======================== NEW AUREL ========================
+      // ======================== NEW AUREL ========================
       DATA_DPA: URL + 'api/v1/dpa/',
       DATA_LRA: URL + 'api/v1/lra/',
       DATA_LPJ: URL + 'api/v1/lpj/',
@@ -101,21 +101,22 @@ export default new Vuex.Store({
       DATA_RP: URL + 'api/v1/rekonPajak/',
       DATA_REGISTER: URL + 'api/v1/register/',
       DASHBOARD: URL + 'api/v1/dashboard/',
+      APPROVAL: URL + 'api/v1/approval/',
 
 
-      
+
     },
 
-    kk : [
-      {id : 1, uraian : 'Kontrak'},
-      {id : 2, uraian : 'SPPD'},
-      {id : 3, uraian : 'ADM'},
-      {id : 4, uraian : 'Hibah'},
-    
+    kk: [
+      { id: 1, uraian: 'Kontrak' },
+      { id: 2, uraian: 'SPPD' },
+      { id: 3, uraian: 'ADM' },
+      { id: 4, uraian: 'Hibah' },
+
     ],
 
     // ====================================== CONTOH AUTOCOMPLETE ====================================
-    list_tahun : [2020,2021,2022,2023,2024,2025,2026],
+    list_tahun: [2020, 2021, 2022, 2023, 2024, 2025, 2026],
     BULAN: [
       { id: 1, uraian: 'Januari' },
       { id: 2, uraian: 'Februari' },
@@ -128,59 +129,59 @@ export default new Vuex.Store({
       { id: 9, uraian: 'September' },
       { id: 10, uraian: 'Oktober' },
       { id: 11, uraian: 'November' },
-      { id: 12, uraian: 'Desember' },
+      { id: 12, uraian: 'Desember' },
 
-    ],
-   
-    list_contoh_autocomplete : [],
+    ],
+
+    list_contoh_autocomplete: [],
     list_unit_kerja: [],
     list_instansi: [],
 
-    list_program : [],
-    list_rincian_keuangan_serapan : [],
+    list_program: [],
+    list_rincian_keuangan_serapan: [],
 
 
 
 
-    list_master_pph : [],
-    list_master_pj : [],
+    list_master_pph: [],
+    list_master_pj: [],
     listOPD: [],
-    list_master_type : [],
+    list_master_type: [],
     // ====================================== CONTOH AUTOCOMPLETE ====================================
 
-    list_menu : null,
-    aksesMenu : {},
+    list_menu: null,
+    aksesMenu: {},
 
     page_first: 1,
     page_last: 0,
     cari_value: "",
-    cek_load_data : true,
+    cek_load_data: true,
 
-    type : [
-      {id : 0, uraian : 'Single Menu'},
-      {id : 1, uraian : 'Multy Menu'}
+    type: [
+      { id: 0, uraian: 'Single Menu' },
+      { id: 1, uraian: 'Multy Menu' }
     ],
 
-    color : {
-      color1 : '',
-      color2 : '',
-      color3 : '',
-      color4 : '',
-      color5 : '',
+    color: {
+      color1: '',
+      color2: '',
+      color3: '',
+      color4: '',
+      color5: '',
 
-      color_delete : '',
-      color_edite : '',
-      color_add : '',
+      color_delete: '',
+      color_edite: '',
+      color_add: '',
     },
 
-    
+
   },
   mutations: {
     SET_RINCIAN_KEUANGAN_SERAPAN(state, payload) {
       state.list_rincian_keuangan_serapan = payload
     },
 
-    listJeniskategorilokasi(state){
+    listJeniskategorilokasi(state) {
 
       fetch(state.url.URL_MasterKategoriLokasi, {
         method: "GET",
@@ -192,11 +193,11 @@ export default new Vuex.Store({
         .then(res => res.json())
         .then(res_data => {
           state.list_MasterKategoriLokasi = res_data;
-      });
+        });
 
     },
 
-    listApelJenis(state){
+    listApelJenis(state) {
 
       fetch(state.url.URL_apelJenis, {
         method: "GET",
@@ -209,15 +210,15 @@ export default new Vuex.Store({
         .then(res_data => {
           // console.log(res_data)
           state.list_ApleJenis = res_data;
-      });
+        });
 
     },
 
-    getStorage(state){
+    getStorage(state) {
       var get_profile = JSON.parse(localStorage.profile);
-      state.unit_kerja = get_profile.profile.unit_kerja; 
+      state.unit_kerja = get_profile.profile.unit_kerja;
     },
-    shoWLoading(){
+    shoWLoading() {
       const spinner = typeof QSpinnerFacebook !== 'undefined'
         ? QSpinnerFacebook // Non-UMD, imported above
         : Quasar.components.QSpinnerFacebook // eslint-disable-line
@@ -232,36 +233,36 @@ export default new Vuex.Store({
         // messageColor: 'white'
       })
     },
-    hideLoading(){
+    hideLoading() {
       Loading.hide()
     },
-    shoWNotify(state, message, color, icon){
+    shoWNotify(state, message, color, icon) {
       Notify.create({
         message: message,
         color: color,
-        position : 'top-right',
-        icon:icon
+        position: 'top-right',
+        icon: icon
       })
     },
   },
   actions: {
-  async getRincianKeuanganSerapan({ commit, state }, rincian_id) {
-    const res = await fetch(
-      state.url.CT_REALISASI_KEUANGAN_SERAPAN + 'viewByRincianKegiatan',
-      {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          authorization: 'kikensbatara ' + localStorage.token
-        },
-        body: JSON.stringify({ rincian_id })
-      }
-    )
+    async getRincianKeuanganSerapan({ commit, state }, rincian_id) {
+      const res = await fetch(
+        state.url.CT_REALISASI_KEUANGAN_SERAPAN + 'viewByRincianKegiatan',
+        {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            authorization: 'kikensbatara ' + localStorage.token
+          },
+          body: JSON.stringify({ rincian_id })
+        }
+      )
 
-    const data = await res.json()
-    commit('SET_RINCIAN_KEUANGAN_SERAPAN', data)
-  }
-},
+      const data = await res.json()
+      commit('SET_RINCIAN_KEUANGAN_SERAPAN', data)
+    }
+  },
 
   modules: {
   }

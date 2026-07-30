@@ -27,7 +27,26 @@ function isLoggedIn(to, from, next) {
 
 
 
-  const routes = [
+function isApprovalAdmin(to, from, next) {
+  if (localStorage.token) {
+    try {
+      const profilex = JSON.parse(localStorage.profile);
+      const profile = profilex.profile;
+      const menuKlpId = parseInt(profile.aurel_new);
+      if (menuKlpId === 4 || menuKlpId === 16) {
+        next();
+        return;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    next('/');
+  } else {
+    next('/login');
+  }
+}
+
+const routes = [
   {
     path: '/login',
     name: 'login',
@@ -69,19 +88,13 @@ function isLoggedIn(to, from, next) {
     component: () => import('../views/dataMaster/registrasi.vue'),
     beforeEnter: isLoggedIn,
   },
- 
-  
-  {
-    path: '/bku',
-    name: 'bku',
-    component: () => import('../views/kertasKerja/bku.vue'),
-    beforeEnter: isLoggedIn,
-  },
- 
+
+
+
 
   // ================ REVIU ========================
 
-  
+
 
   {
     path: '/rekeningKoran',
@@ -124,6 +137,12 @@ function isLoggedIn(to, from, next) {
     name: 'register',
     component: () => import('../views/register.vue'),
     beforeEnter: isLoggedIn,
+  },
+  {
+    path: '/approvalDokumen',
+    name: 'approvalDokumen',
+    component: () => import('../views/approvalDokumen.vue'),
+    beforeEnter: isApprovalAdmin,
   },
   {
     path: '/about',
