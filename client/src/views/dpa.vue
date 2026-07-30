@@ -12,7 +12,13 @@
                         <div class="row">
                             <q-input v-model="cari_value" @keyup="cari_data()" outlined square :dense="true"
                                 class="bg-white" style="width:90%" />
-                           
+                            <q-btn glossy class="bg-orange-5" @click="mdl_add = true" dense flat icon="add"
+                                style="width:10%">
+                                <q-tooltip content-class="bg-orange-5" content-style="font-size: 13px">
+                                    Click untuk menambah data
+                                </q-tooltip>
+                            </q-btn>
+
                         </div>
 
                     </div>
@@ -48,66 +54,84 @@
                         <span class="h_lable ">Tahun Anggaran</span>
                         <select v-model="filterku.tahun" @change="cari_data()" class="bg-white">
                             <option value="">-- Tahun --</option>
-                            <option v-for="data in $store.state.list_tahun" :key="data.id" :value="data.id">{{ data.id }}
+                            <option v-for="data in $store.state.list_tahun" :key="data.id" :value="data.id">{{ data.id
+                                }}
                             </option>
                         </select>
                     </div>
-                    
+
                 </div>
 
 
                 <hr class="hrpagin2">
 
 
-                <div class="row q-col-gutter-md"> 
+                <div class="row q-col-gutter-md">
                     <div class="col-md-4 col-sm-6 col-12 flexing" v-for="(data, index) in list_data" :key="index">
-                            <div class="row listDokRow" style="width: 100%; margin: 0;">
-                                <div class="col-md-3 col-3 listDok text-center">
-                                    <a @click="previewFile(data)" href="javascript:void(0);" class="h_clear1">
-                                        <q-img
-                                            style="width: 100%; max-width: 50px;"
-                                            :src="'img/filetype/' + UMUM.imageFileType(data.file_type)"
-                                            spinner-color="yellow"
-                                        />
-                                    </a>
-                                </div>
+                        <div class="row listDokRow" style="width: 100%; margin: 0;">
+                            <div class="col-md-3 col-3 listDok text-center">
+                                <a @click="previewFile(data)" href="javascript:void(0);" class="h_clear1">
+                                    <q-img style="width: 100%; max-width: 50px;"
+                                        :src="'img/filetype/' + UMUM.imageFileType(data.file_type)"
+                                        spinner-color="yellow" />
+                                </a>
+                            </div>
 
-                                <div class="col-md-9 col-9 listDok" style="padding-left: 10px;">
-                                    <a @click="previewFile(data)" href="javascript:void(0);" class="h_listDok1 h_clear1">
-                                        {{ data.nama_file }}
-                                    </a>
-                                    <div class="h_listDok2" style="font-size: 11px; line-height: 1.2;">
-                                        {{ data.unit_kerja_uraian }}
-                                    </div>
-                                    <div class="h_listDok3">
-                                        <q-icon name="event" /> {{ UMUM.tglConvert(data.createAt) }}
-                                    </div>
+                            <div class="col-md-9 col-9 listDok" style="padding-left: 10px; padding-right: 75px;">
+                                <a @click="previewFile(data)" href="javascript:void(0);" class="h_listDok1 h_clear1">
+                                    {{ data.nama_file }}
+                                </a>
+                                <div class="h_listDok2" style="font-size: 11px; line-height: 1.2;">
+                                    {{ data.unit_kerja_uraian }}
                                 </div>
+                                <div class="h_listDok3">
+                                    <q-icon name="event" /> {{ UMUM.tglConvert(data.createAt) }}
+                                </div>
+                                <div v-if="data.status_approval === 2 && data.catatan_revisi" class="text-caption text-red-9 q-mt-xs" style="font-size: 10px;">
+                                    <strong>Catatan Revisi:</strong> {{ data.catatan_revisi }}
+                                </div>
+                            </div>
 
-                                <div class="listDok_setting">
-                                    <q-btn icon="settings" flat round size="xs" color="grey-7">
-                                        <q-menu transition-show="scale" transition-hide="scale">
-                                            <q-list style="min-width: 100px">
-                                                <q-item clickable v-close-popup @click="selectData(data), mdl_edit = true">
-                                                    <q-item-section avatar><q-icon name="edit" color="blue" /></q-item-section>
-                                                    <q-item-section>Edit</q-item-section>
-                                                </q-item>
-                                                <q-item clickable v-close-popup @click="selectData(data), mdl_hapus = true">
-                                                    <q-item-section avatar><q-icon name="delete" color="red" /></q-item-section>
-                                                    <q-item-section>Hapus</q-item-section>
-                                                </q-item>
-                                                <q-separator />
-                                                <q-item clickable v-close-popup @click="downloadFile(data.file)">
-                                                    <q-item-section avatar><q-icon name="download" color="green" /></q-item-section>
-                                                    <q-item-section>Download</q-item-section>
-                                                </q-item>
-                                            </q-list>
-                                        </q-menu>
-                                    </q-btn>
-                                </div>
+                            <!-- STATUS BADGE SEBELAH KANAN -->
+                            <div style="position: absolute; top: 6px; right: 32px;">
+                                <q-chip v-if="data.status_approval === 0 || data.status_approval == null" color="orange-8" text-color="white" dense icon="hourglass_top" style="font-size:10px; margin: 0;">
+                                    Proses
+                                </q-chip>
+                                <q-chip v-else-if="data.status_approval === 1" color="green-8" text-color="white" dense icon="check_circle" style="font-size:10px; margin: 0;">
+                                    Disetujui
+                                </q-chip>
+                                <q-chip v-else-if="data.status_approval === 2" color="red-8" text-color="white" dense icon="cancel" style="font-size:10px; margin: 0;">
+                                    Ditolak
+                                </q-chip>
+                            </div>
+
+                            <div class="listDok_setting">
+                                <q-btn icon="settings" flat round size="xs" color="grey-7">
+                                    <q-menu transition-show="scale" transition-hide="scale">
+                                        <q-list style="min-width: 100px">
+                                            <q-item clickable v-close-popup @click="selectData(data), mdl_edit = true">
+                                                <q-item-section avatar><q-icon name="edit"
+                                                        color="blue" /></q-item-section>
+                                                <q-item-section>Edit</q-item-section>
+                                            </q-item>
+                                            <q-item clickable v-close-popup @click="selectData(data), mdl_hapus = true">
+                                                <q-item-section avatar><q-icon name="delete"
+                                                        color="red" /></q-item-section>
+                                                <q-item-section>Hapus</q-item-section>
+                                            </q-item>
+                                            <q-separator />
+                                            <q-item clickable v-close-popup @click="downloadFile(data.file)">
+                                                <q-item-section avatar><q-icon name="download"
+                                                        color="green" /></q-item-section>
+                                                <q-item-section>Download</q-item-section>
+                                            </q-item>
+                                        </q-list>
+                                    </q-menu>
+                                </q-btn>
                             </div>
                         </div>
                     </div>
+                </div>
                 <hr class="hrpagin">
                 <br>
                 <div class="flex flex-center">
@@ -118,7 +142,7 @@
                 </div>
                 <br>
             </q-card-section>
-            
+
         </q-card>
 
 
@@ -126,39 +150,37 @@
             <q-card bordered>
                 <q-card-section class="main1x text-white row items-center">
                     <div class="text-subtitle1">
-                        <q-icon name="description" /> Preview: {{ selected_file_name }} 
+                        <q-icon name="description" /> Preview: {{ selected_file_name }}
                         <span class="text-caption text-grey-4">({{ selected_file }})</span>
                     </div>
                     <q-space />
                     <q-btn icon="close" flat round dense @click="selected_file = null" />
                 </q-card-section>
-                
+
                 <q-card-section class="q-pa-none" style="height: 600px;">
-    
-                    <iframe 
-                        v-if="selected_file_type === 'application/pdf'"
-                        :src="$store.state.url.URL_APP + 'uploads/' + selected_file" 
-                        width="100%" 
-                        height="100%" 
+
+                    <iframe v-if="selected_file_type === 'application/pdf'"
+                        :src="$store.state.url.URL_APP + 'uploads/' + selected_file" width="100%" height="100%"
                         style="border: none;">
                     </iframe>
 
-                    <iframe 
+                    <iframe
                         v-else-if="selected_file_type.includes('spreadsheet') || selected_file_type.includes('excel')"
-                        :src="'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent($store.state.url.URL_APP + 'uploads/' + selected_file)" 
-                        width="100%" 
-                        height="100%" 
-                        style="border: none;">
+                        :src="'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent($store.state.url.URL_APP + 'uploads/' + selected_file)"
+                        width="100%" height="100%" style="border: none;">
                     </iframe>
 
-                    <div v-else-if="selected_file_type.includes('image')" class="flex flex-center" style="height: 100%;">
-                        <img :src="$store.state.url.URL_APP + 'uploads/' + selected_file" style="max-width: 100%; max-height: 100%;" />
+                    <div v-else-if="selected_file_type.includes('image')" class="flex flex-center"
+                        style="height: 100%;">
+                        <img :src="$store.state.url.URL_APP + 'uploads/' + selected_file"
+                            style="max-width: 100%; max-height: 100%;" />
                     </div>
 
                     <div v-else class="text-center q-pa-xl">
                         <q-icon name="info" size="50px" color="grey" />
                         <div class="text-grey">Preview tidak tersedia untuk format ini.</div>
-                        <q-btn label="Download File" color="primary" @click="downloadFile(selected_file)" flat icon="download" />
+                        <q-btn label="Download File" color="primary" @click="downloadFile(selected_file)" flat
+                            icon="download" />
                     </div>
 
                 </q-card-section>
@@ -193,25 +215,21 @@
                             </div>
 
                             <div class="col-12 col-md-12 frame_cari ">
-                              <span class="h_lable ">Nama File</span>
-                              <q-input v-model="form.nama_file" outlined square :dense="true" class="bg-white margin_btn" /> 
+                                <span class="h_lable ">Nama File</span>
+                                <q-input v-model="form.nama_file" outlined square :dense="true"
+                                    class="bg-white margin_btn" />
                             </div>
 
                             <div class="col-12 col-md-12 frame_cari ">
-                              <span class="h_lable ">Ketarangan</span>
-                              <q-input v-model="form.keterangan" type="textarea" outlined square :dense="true" class="bg-white margin_btn" /> 
+                                <span class="h_lable ">Ketarangan</span>
+                                <q-input v-model="form.keterangan" type="textarea" outlined square :dense="true"
+                                    class="bg-white margin_btn" />
                             </div>
 
                             <div class="col-12 col-md-12 frame_cari ">
                                 <span class="h_lable ">UPLOAD FILE (PDF)</span>
-                                <q-file 
-                                    outlined 
-                                    v-model="form.file" 
-                                    square 
-                                    :dense="true" 
-                                    class="bg-white margin_btn"
-                                    accept=".pdf" 
-                                >
+                                <q-file outlined v-model="form.file" square :dense="true" class="bg-white margin_btn"
+                                    accept=".pdf">
                                     <template v-slot:prepend>
                                         <q-icon name="attach_file" />
                                     </template>
@@ -252,18 +270,21 @@
                         <div class="col-12 frame_cari">
                             <span class="h_lable">Tahun</span>
                             <select class="bg-white margin_btn" v-model="form.tahun">
-                                <option v-for="data in $store.state.list_tahun" :key="data.id" :value="data.id">{{ data.id }}</option>
+                                <option v-for="data in $store.state.list_tahun" :key="data.id" :value="data.id">{{
+                                    data.id }}
+                                </option>
                             </select>
                         </div>
 
                         <div class="col-12 frame_cari">
                             <span class="h_lable">Nama File</span>
-                            <q-input v-model="form.nama_file" outlined square dense class="bg-white margin_btn" /> 
+                            <q-input v-model="form.nama_file" outlined square dense class="bg-white margin_btn" />
                         </div>
 
                         <div class="col-12 frame_cari">
                             <span class="h_lable">Keterangan</span>
-                            <q-input v-model="form.keterangan" type="textarea" outlined square dense class="bg-white margin_btn" /> 
+                            <q-input v-model="form.keterangan" type="textarea" outlined square dense
+                                class="bg-white margin_btn" />
                         </div>
 
                         <div class="col-12 frame_cari">
@@ -293,7 +314,7 @@
                         <img src="img/alert.png" alt="" width="75"> <br>
                         <span class="h_notifikasi">APAKAH ANDA YAKIN INGIN MENGHAPUS DATA INI??</span>
                         <div class="text-caption text-red-9 q-mt-sm">{{ form.nama_file }}</div>
-                        
+
                         <input type="submit" style="position: absolute; left: -9999px" />
                         <br>
 
@@ -303,7 +324,7 @@
                     </form>
                 </q-card-section>
             </q-card>
-        </q-dialog> 
+        </q-dialog>
 
         <!-- ================================================ MODAL HAPUS ================================================ -->
 
@@ -329,7 +350,7 @@ export default {
         return {
 
             form: {
-                id : '',
+                id: '',
                 unit_kerja: '',
                 tahun: new Date().getFullYear(),
                 nama_file: '',
@@ -344,7 +365,7 @@ export default {
                 instansi: '',
             },
 
-            selected_file: null, 
+            selected_file: null,
             selected_file_type: '',
             selected_file_name: '',
 
@@ -374,7 +395,7 @@ export default {
             this.selected_file = data.file;
             this.selected_file_type = data.file_type;
             this.selected_file_name = data.nama_file;
-            
+
             setTimeout(() => {
                 window.scrollTo({ behavior: 'smooth', top: document.body.scrollHeight });
             }, 100);
@@ -401,20 +422,20 @@ export default {
                     tahun: this.filterku.tahun,
                 })
             })
-            .then(res => {
-                if (!res.ok) throw new Error("Server Error");
-                return res.json();
-            })
-            .then(res_data => {
-                this.list_data = res_data.data || [];
-                this.page_last = res_data.jml_data || 0;
-                this.$store.commit("hideLoading");
-            })
-            .catch(err => {
-                console.error("Fetch Error:", err);
-                this.$store.commit("hideLoading");
-                this.Notify('Gagal memuat data', 'negative', 'warning');
-            });
+                .then(res => {
+                    if (!res.ok) throw new Error("Server Error");
+                    return res.json();
+                })
+                .then(res_data => {
+                    this.list_data = res_data.data || [];
+                    this.page_last = res_data.jml_data || 0;
+                    this.$store.commit("hideLoading");
+                })
+                .catch(err => {
+                    console.error("Fetch Error:", err);
+                    this.$store.commit("hideLoading");
+                    this.Notify('Gagal memuat data', 'negative', 'warning');
+                });
         },
 
 
@@ -431,36 +452,36 @@ export default {
                 },
                 body: fd
             })
-            .then(res => res.json())
-            .then(res_data => {
-                this.Notify('Sukses Menambah Data', 'primary', 'check_circle_outline');
-                this.mdl_add = false;
-                this.getView();
-            });
+                .then(res => res.json())
+                .then(res_data => {
+                    this.Notify('Sukses Menambah Data', 'primary', 'check_circle_outline');
+                    this.mdl_add = false;
+                    this.getView();
+                });
 
         },
 
 
 
-        
-            editData: function () {
-                this.$store.commit("shoWLoading");
-                this.btn_add = true;
 
-                let fd = new FormData();
-                fd.append('form', JSON.stringify(this.form));
-                // Jika user memilih file baru, masukkan ke FormData
-                if (this.form.file) {
-                    fd.append('file', this.form.file);
-                }
+        editData: function () {
+            this.$store.commit("shoWLoading");
+            this.btn_add = true;
 
-                fetch(this.$store.state.url.DATA_DPA + "editData", {
-                    method: "POST",
-                    headers: {
-                        authorization: "kikensbatara " + localStorage.token
-                    },
-                    body: fd
-                })
+            let fd = new FormData();
+            fd.append('form', JSON.stringify(this.form));
+            // Jika user memilih file baru, masukkan ke FormData
+            if (this.form.file) {
+                fd.append('file', this.form.file);
+            }
+
+            fetch(this.$store.state.url.DATA_DPA + "editData", {
+                method: "POST",
+                headers: {
+                    authorization: "kikensbatara " + localStorage.token
+                },
+                body: fd
+            })
                 .then(res => res.json())
                 .then(res_data => {
                     this.btn_add = false;
@@ -474,25 +495,25 @@ export default {
                     this.$store.commit("hideLoading");
                     console.error(err);
                 });
-            },
+        },
 
-            removeData: function () {
-                this.$store.commit("shoWLoading");
-                
-                // Mengambil ID dan Nama File dari form yang sudah diisi saat klik tombol hapus di list
-                let data_hapus = {
-                    id: this.form.id,
-                    file: this.form.file_old 
-                };
+        removeData: function () {
+            this.$store.commit("shoWLoading");
 
-                fetch(this.$store.state.url.DATA_DPA + "hapusData", {
-                    method: "POST",
-                    headers: {
-                        "content-type": "application/json",
-                        authorization: "kikensbatara " + localStorage.token
-                    },
-                    body: JSON.stringify(data_hapus)
-                })
+            // Mengambil ID dan Nama File dari form yang sudah diisi saat klik tombol hapus di list
+            let data_hapus = {
+                id: this.form.id,
+                file: this.form.file_old
+            };
+
+            fetch(this.$store.state.url.DATA_DPA + "hapusData", {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json",
+                    authorization: "kikensbatara " + localStorage.token
+                },
+                body: JSON.stringify(data_hapus)
+            })
                 .then(res => res.json())
                 .then(res_data => {
                     this.$store.commit("hideLoading");
@@ -504,17 +525,17 @@ export default {
                     this.$store.commit("hideLoading");
                     console.error(err);
                 });
-            },
+        },
 
         selectData: function (data) {
-          
+
             this.form.id = data.id;
             this.form.tahun = data.tahun;
             this.form.nama_file = data.nama_file;
             this.form.keterangan = data.keterangan;
             this.form.unit_kerja = data.unit_kerja;
-            this.form.file_old = data.file; 
-            this.form.file = null; 
+            this.form.file_old = data.file;
+            this.form.file = null;
         },
 
 
@@ -583,30 +604,35 @@ export default {
 <style scoped>
 .listDokRow {
     border: 1px solid #e0e0e0;
-    padding: 8px; /* Dikurangi dari 10px */
+    padding: 8px;
+    /* Dikurangi dari 10px */
     margin-bottom: 5px;
     border-radius: 8px;
     position: relative;
     background: white;
     transition: 0.3s;
-    min-height: 80px; /* Menjaga tinggi tetap seragam */
+    min-height: 80px;
+    /* Menjaga tinggi tetap seragam */
     display: flex;
     align-items: center;
 }
 
 .h_listDok1 {
     font-weight: bold;
-    font-size: 13px; /* Ukuran teks diperkecil agar pas 3 kolom */
+    font-size: 13px;
+    /* Ukuran teks diperkecil agar pas 3 kolom */
     color: #1976D2;
     text-decoration: none;
     display: block;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; /* Agar teks panjang tidak merusak layout */
+    text-overflow: ellipsis;
+    /* Agar teks panjang tidak merusak layout */
 }
 
 .h_listDok2 {
-    font-size: 10px; /* Ukuran teks keterangan diperkecil */
+    font-size: 10px;
+    /* Ukuran teks keterangan diperkecil */
     color: #616161;
     margin-top: 2px;
 }
