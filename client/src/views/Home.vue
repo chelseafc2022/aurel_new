@@ -78,6 +78,65 @@
         </div>
       </q-card-section>
 
+      <!-- MONITORING STATUS DOKUMEN (KHUSUS ADMINISTRATOR & INSPEKTORAT) -->
+      <q-card-section class="biruSangatmudaGrad q-pt-none" v-if="isApprovalAdmin">
+        <div class="row">
+
+          <!-- PENDING / PROSES -->
+          <div class="col-12 col-sm-6 col-md-3 frWidget cursor-pointer" @click="goToApproval('0')">
+            <div class="row shadow-5 frWidgetSub">
+              <div class="col-4 frWidgetSub1 text-center main6x row items-center justify-center">
+                <q-icon name="hourglass_top" style="font-size:350%; color:white" />
+              </div>
+              <div class="col-8 frWidgetSub2 main6">
+                <span class="frWidgetText1Dark">Menunggu Verifikasi</span><br>
+                <span class="frWidgetText2Dark">{{ dashboard_opd.doc_pending || 0 }} Berkas</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- APPROVED / DISETUJUI -->
+          <div class="col-12 col-sm-6 col-md-3 frWidget cursor-pointer" @click="goToApproval('1')">
+            <div class="row shadow-5 frWidgetSub">
+              <div class="col-4 frWidgetSub1 text-center main5x row items-center justify-center">
+                <q-icon name="check_circle" style="font-size:350%; color:#faf6ed" />
+              </div>
+              <div class="col-8 frWidgetSub2 main5">
+                <span class="frWidgetText1">Dokumen Disetujui</span><br>
+                <span class="frWidgetText2">{{ dashboard_opd.doc_approved || 0 }} Berkas</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- REJECTED / DITOLAK -->
+          <div class="col-12 col-sm-6 col-md-3 frWidget cursor-pointer" @click="goToApproval('2')">
+            <div class="row shadow-5 frWidgetSub">
+              <div class="col-4 frWidgetSub1 text-center bg-red-9 row items-center justify-center">
+                <q-icon name="cancel" style="font-size:350%; color:white" />
+              </div>
+              <div class="col-8 frWidgetSub2 bg-red-7">
+                <span class="frWidgetText1">Ditolak / Revisi</span><br>
+                <span class="frWidgetText2">{{ dashboard_opd.doc_rejected || 0 }} Berkas</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- TOTAL DOKUMEN UPLOAD -->
+          <div class="col-12 col-sm-6 col-md-3 frWidget cursor-pointer" @click="goToApproval('')">
+            <div class="row shadow-5 frWidgetSub">
+              <div class="col-4 frWidgetSub1 text-center main1 row items-center justify-center">
+                <q-icon name="description" style="font-size:350%; color:white" />
+              </div>
+              <div class="col-8 frWidgetSub2 main1x">
+                <span class="frWidgetText1">Total Berkas Upload</span><br>
+                <span class="frWidgetText2">{{ dashboard_opd.doc_total || 0 }} Berkas</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </q-card-section>
+
       <q-card-section class="biruSangatmudaGrad">
         <div class="heatmap-title">HEATMAP KELENGKAPAN OPD</div>
 
@@ -102,15 +161,37 @@
                   <td
                     v-for="m in heatmap.menus"
                     :key="m"
-                    :class="row.status[m] ? 'cell-ok' : 'cell-no'"
+                    :class="row.status[m] === 1 ? 'cell-ok' : (row.status[m] === 0 ? 'cell-pending' : (row.status[m] === 2 ? 'cell-rejected' : 'cell-no'))"
                   >
-                  <q-icon
-                    v-if="row.status[m]"
-                    name="check_circle"
-                    size="18px"
-                    color="green-7"
-                  />
+                    <!-- Disetujui (1) -->
+                    <q-icon
+                      v-if="row.status[m] === 1"
+                      name="check_circle"
+                      size="18px"
+                      color="green-7"
+                    >
+                      <q-tooltip content-class="bg-green-7" content-style="font-size: 12px">Disetujui</q-tooltip>
+                    </q-icon>
 
+                    <!-- Menunggu Verifikasi / Pending (0) -->
+                    <q-icon
+                      v-else-if="row.status[m] === 0"
+                      name="hourglass_top"
+                      size="18px"
+                      color="orange-8"
+                    >
+                      <q-tooltip content-class="bg-orange-8" content-style="font-size: 12px">Menunggu Verifikasi (Proses)</q-tooltip>
+                    </q-icon>
+
+                    <!-- Ditolak (2) -->
+                    <q-icon
+                      v-else-if="row.status[m] === 2"
+                      name="cancel"
+                      size="18px"
+                      color="red-7"
+                    >
+                      <q-tooltip content-class="bg-red-7" content-style="font-size: 12px">Ditolak (Perlu Revisi)</q-tooltip>
+                    </q-icon>
                   </td>
                 </tr>
               </tbody>
@@ -186,6 +267,10 @@ export default {
         total_opd: 0,
         opd_sudah_upload: 0,
         opd_belum_upload: 0,
+        doc_pending: 0,
+        doc_approved: 0,
+        doc_rejected: 0,
+        doc_total: 0,
       },
 
       trista_monev: 0,
@@ -193,14 +278,32 @@ export default {
       listChart: null,
       list_opd_upload: [],
 
-
-
       UMUM: UMUM,
       FETCHING: FETCHING,
     }
   },
 
+  computed: {
+    isApprovalAdmin() {
+      try {
+        if (!localStorage.profile) return false;
+        const profilex = JSON.parse(localStorage.profile);
+        const profile = profilex.profile;
+        const menuKlpId = parseInt(profile.aurel_new);
+        return menuKlpId === 4 || menuKlpId === 16;
+      } catch (e) {
+        return false;
+      }
+    }
+  },
+
   methods: {
+    goToApproval(status) {
+      this.$router.push({
+        path: '/approvalDokumen',
+        query: { status_approval: status, tahun: this.filterku.tahun }
+      });
+    },
 
     async loadHeatmap () {
       this.loadingHeatmap = true
@@ -230,7 +333,7 @@ export default {
     },
 
 
-    onChangeTahun() {
+    onChangeTahun(val) {
       console.log('INPUT TAHUN:', val)
       this.filterku.tahun = val
       this.asyncFunc()
@@ -286,6 +389,10 @@ export default {
         this.dashboard_opd.total_opd = data.total_opd
         this.dashboard_opd.opd_sudah_upload = data.opd_sudah_upload
         this.dashboard_opd.opd_belum_upload = data.opd_belum_upload
+        this.dashboard_opd.doc_pending = data.doc_pending
+        this.dashboard_opd.doc_approved = data.doc_approved
+        this.dashboard_opd.doc_rejected = data.doc_rejected
+        this.dashboard_opd.doc_total = data.doc_total
 
       } catch (err) {
         console.error('Gagal load dashboard OPD', err)
@@ -399,3 +506,45 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.heatmap-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: #1976D2;
+}
+.heatmap-wrapper {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  padding: 10px;
+}
+.heatmap-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+.heatmap-table th, .heatmap-table td {
+  padding: 8px 6px;
+  border: 1px solid #e2e8f0;
+}
+.opd-name {
+  text-align: left;
+  font-weight: 500;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.cell-ok {
+  background-color: #e8f5e9;
+}
+.cell-pending {
+  background-color: #fff3e0;
+}
+.cell-rejected {
+  background-color: #ffebee;
+}
+.cell-no {
+  background-color: #f8fafc;
+}
+</style>
